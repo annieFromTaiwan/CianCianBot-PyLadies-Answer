@@ -5,7 +5,7 @@ import re
 class CianCianBot:
     commands = {
             "HELP": ("說明", "幫幫"),
-            "SUMMARY": (),  # [TODO 8]
+            "SUMMARY": ("結帳", "結餘"),
             "RECENT_RECORDS": (),  # [TODO 10]
             "INTERNAL_TEST": ("測試帳號",),
             }
@@ -49,9 +49,15 @@ class CianCianBot:
         '''
         Get balance number from all pairs in the database.
         '''
-        # 1. Get balance records from database [TODO 8]
+        # 1. Get balance records from database
+        #    Hint: call `self.data_manager.get_all_summary(...)`
+        try:
+            balance_records = self.data_manager.get_all_summary(unique_id)
+        except Exception:
+            return "抱歉，擷取資料時出現了錯誤。"
 
-
+        if not balance_records:
+            return "目前沒有任何記錄哦！"
 
         # 2. Format outputs
         #    "目前 熊大欠茜茜 5566元，茜茜欠大雄 1234元，大雄欠熊大 888元。"
@@ -148,8 +154,9 @@ class CianCianBot:
         if msg in self.commands["HELP"]:
             return self.get_help()
 
-        # 「結帳」Use `self.get_summary(...)` [TODO 8]
-
+        # 「結帳」Use `self.get_summary(...)`
+        elif msg in self.commands["SUMMARY"]:
+            return self.get_summary(unique_id)
 
         # 「最近帳單」Use `self.get_recent_records(...)` [TODO 10]
 
