@@ -58,8 +58,8 @@ from linebot.models import (
 
 app = Flask(__name__)
 
-channel_secret = 'TODO'
-channel_access_token = 'TODO'
+channel_secret = 'PLEASE_FILL_IN_YOUR_LINEBOT_SETTING'
+channel_access_token = 'PLEASE_FILL_IN_YOUR_LINEBOT_SETTING'
 handler = WebhookHandler(channel_secret)
 line_bot_api = LineBotApi(channel_access_token)
 
