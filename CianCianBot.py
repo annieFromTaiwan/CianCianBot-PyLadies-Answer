@@ -98,11 +98,22 @@ class CianCianBot:
 
             Or when encountering an error, returns a string indicating the error.
         """
-        match_obj = re.match("[TODO 2]", msg)
+        match_obj = re.match("(.+)欠(.+?)([0-9]+)元(.*)", msg)
         if not match_obj:
             return None
 
-        # 1. Extract `borrower`, `owner`, `money`, `note` from `msg`. [TODO 3]
+        # 1. Extract `borrower`, `owner`, `money`, `note` from `msg`.
+        borrower = match_obj.group(1).strip()
+        owner = match_obj.group(2).strip()
+        money = int(match_obj.group(3))
+        note = match_obj.group(4).strip()
+
+        if not borrower:
+            return "誰欠%s錢呢？他的名字我看不懂。" % owner
+        elif not owner:
+            return "%s欠誰錢呢？他的名字我看不懂。" % borrower
+        elif borrower == owner:
+            return "為什麼欠錢的人和被欠的人都是「%s」？" % borrower
 
 
         # 2. Write the record (`borrower`, `owner`, `money`, `note`) to DataManager.
@@ -111,12 +122,12 @@ class CianCianBot:
 
 
 
-        # 3. Return the result of this record. [TODO 3],
+        # 3. Return the result of this record,
         #    also returns the latest balance_number. [TODO 4]
         #    Hint: Use `self._get_presenting_order(...)` after finish [TODO 6]
+        res_part1 = "已記錄 %s欠%s %d元%s。" % (borrower, owner, money, ((" " + note) if note else ""))
 
-
-        return "已紀錄 熊大欠茜茜 20元。\n目前 茜茜欠熊大 180元。"
+        return res_part1 + "\n" + "目前 茜茜欠熊大 180元。"
 
     def respond(self, msg, unique_id):
         """
