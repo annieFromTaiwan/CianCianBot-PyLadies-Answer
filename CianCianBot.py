@@ -118,16 +118,19 @@ class CianCianBot:
 
         # 2. Write the record (`borrower`, `owner`, `money`, `note`) to DataManager.
         #    Hint: call `self.data_manager.write(...)`
-        #    [TODO 4]
-
+        try:
+            summary = self.data_manager.write(unique_id, borrower, owner, money, note)
+        except Exception as e:
+            return "抱歉，寫入欠債紀錄時出現了錯誤。"
+        person1, person2, balance_number = summary
 
 
         # 3. Return the result of this record,
-        #    also returns the latest balance_number. [TODO 4]
+        #    also returns the latest balance_number.
         #    Hint: Use `self._get_presenting_order(...)` after finish [TODO 6]
         res_part1 = "已記錄 %s欠%s %d元%s。" % (borrower, owner, money, ((" " + note) if note else ""))
-
-        return res_part1 + "\n" + "目前 茜茜欠熊大 180元。"
+        res_part2 = "目前 %s欠%s %d元。" % self._get_presenting_order(person1, person2, balance_number)
+        return res_part1 + "\n" + res_part2
 
     def respond(self, msg, unique_id):
         """
