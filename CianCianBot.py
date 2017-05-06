@@ -35,13 +35,13 @@ class CianCianBot:
             (borrower, owner, money)
             Where `money` should be positive.
         """
-        # [TODO 6]
         # case 1 -「B欠A $xx元」, xx > 0
-
+        if balance_number < 0:
+            return (person2, person1, (-1) * balance_number)
 
         # case 2 -「A欠B $xx元」, xx > 0
-
-
+        else:
+            return (person1, person2, balance_number)
 
         return (person1, person2, balance_number)
 
@@ -127,7 +127,7 @@ class CianCianBot:
 
         # 3. Return the result of this record,
         #    also returns the latest balance_number.
-        #    Hint: Use `self._get_presenting_order(...)` after finish [TODO 6]
+        #    Hint: Use `self._get_presenting_order(...)`
         res_part1 = "已記錄 %s欠%s %d元%s。" % (borrower, owner, money, ((" " + note) if note else ""))
         res_part2 = "目前 %s欠%s %d元。" % self._get_presenting_order(person1, person2, balance_number)
         return res_part1 + "\n" + res_part2
