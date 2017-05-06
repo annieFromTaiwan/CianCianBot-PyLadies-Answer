@@ -60,8 +60,10 @@ class InMemoryFakeDB:
         return (person1, person2, balance_number)
 
     def get_all_summary(self, unique_id):
-        # Return all people pairs' balance number. [TODO 9]
-        return None
+        # Return all people pairs' balance number.
+        this_window_summaries = self.summary.setdefault(unique_id, {})
+        for person_tuple, balance_number in this_window_summaries.items():
+            yield (person_tuple[0], person_tuple[1], balance_number)
 
     def get_recent_records(self, unique_id):
         # Return most recent 5 records. [TODO 11]
