@@ -17,11 +17,13 @@ class CianCianBot:
         """
         Returns a string to help new users.
         """
-        # [TODO 1]
-        help_msg = "讓我來教你要怎麼使用小茜茜！"
-
-
-
+        wrap_brackets = lambda s: ("「%s」" % s)
+        help_msg = "可以對我說以下幾句話試試看喔！\n" \
+                 + "「熊大欠小茜茜 900元 晚餐」\n" \
+                 + "".join(map(wrap_brackets, self.commands["SUMMARY"])) + "\n" \
+                 + "".join(map(wrap_brackets, self.commands["RECENT_RECORDS"])) + "\n" \
+                 + "".join(map(wrap_brackets, self.commands["HELP"])) + "\n" \
+                 + "希望你喜歡我 :))"
         return help_msg
 
     @staticmethod
