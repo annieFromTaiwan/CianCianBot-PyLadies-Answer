@@ -79,18 +79,15 @@ class CianCianBot:
         if not records:
             return "目前沒有任何記錄哦！"
 
-        # Formating records to strings. [TODO 12]
-        #
-        # ------ Example ------
-        # 2016/1/3 14:23
-        # 熊大欠茜茜 300元 午餐吃了超好吃的雅室牛排
-        #
-        # 2016/1/4 19:23
-        # 熊大欠茜茜 1490元 神魔卡包
-        # ---------------------
-
-        result = str(records)
-        return result
+        # Formating records to strings.
+        paragraphs = []
+        for record in records:
+            borrower, owner, money, note, timestamp = record
+            s = timestamp.strftime("%Y/%m/%d %H:%M") + "\n"
+            s += "%s欠%s %s元 %s" % (borrower, owner, money, note)
+            paragraphs.append(s)
+        main_paragraph = "\n\n".join(paragraphs)
+        return main_paragraph
 
     def process_borrow_statement(self, msg, unique_id):
         """
