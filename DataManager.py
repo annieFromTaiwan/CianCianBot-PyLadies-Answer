@@ -66,8 +66,9 @@ class InMemoryFakeDB:
             yield (person_tuple[0], person_tuple[1], balance_number)
 
     def get_recent_records(self, unique_id):
-        # Return most recent 5 records. [TODO 11]
-        return None
+        # Return most recent 5 records.
+        this_window_records = self.records.get(unique_id, [])
+        return sorted(this_window_records, key=lambda t: t[4], reverse=True)[:5]
 
 
 import traceback
