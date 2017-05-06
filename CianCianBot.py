@@ -6,7 +6,7 @@ class CianCianBot:
     commands = {
             "HELP": ("說明", "幫幫"),
             "SUMMARY": ("結帳", "結餘"),
-            "RECENT_RECORDS": (),  # [TODO 10]
+            "RECENT_RECORDS": ("最近帳單",),
             "INTERNAL_TEST": ("測試帳號",),
             }
 
@@ -158,8 +158,9 @@ class CianCianBot:
         elif msg in self.commands["SUMMARY"]:
             return self.get_summary(unique_id)
 
-        # 「最近帳單」Use `self.get_recent_records(...)` [TODO 10]
-
+        # 「最近帳單」Use `self.get_recent_records(...)`
+        elif msg in self.commands["RECENT_RECORDS"]:
+            return self.get_recent_records(unique_id)
 
         # 「測試帳號」(Only for testing)
         elif msg in self.commands["INTERNAL_TEST"]:
