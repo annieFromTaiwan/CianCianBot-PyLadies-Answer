@@ -42,10 +42,15 @@ class InMemoryFakeDB:
     def write(self, unique_id, borrower, owner, money, note):
         # 1. Write these information to `records`. [TODO 7]
 
-        # 2. Calculate the latest balance_number, and update the result in `summary`. [TODO 5]
-        person1 = "I_am_poor"
-        person2 = "I_am_rich"
-        balance_number = 400
+        # 2. Calculate the latest balance_number, and update the result in `summary`.
+        person1, person2 = tuple(sorted((borrower, owner)))
+        this_window_summaries = self.summary.setdefault(unique_id, {})
+        balance_number = this_window_summaries.setdefault((person1, person2), 0)
+        if person1 == borrower:
+            balance_number += money
+        else:
+            balance_number -= money
+        this_window_summaries[(person1, person2)] = balance_number
 
         # 3. Return the latest balance_number
         return (person1, person2, balance_number)
