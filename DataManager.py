@@ -103,9 +103,8 @@ class PostgreDB:
         """
         cur = self.conn.cursor()
         cur.execute(
-                # Fill in all the ____s. [TODO]
-                "INSERT INTO records (____, ____, ____, ____, ____, ____) VALUES (%s, %s, %s, %s, %s, %s)",
-                (unique_id, ____, ____, ____, ____, datetime.today())
+                "INSERT INTO records (unique_id, borrower, owner, money, note, timestamp) VALUES (%s, %s, %s, %s, %s, %s)",
+                (unique_id, borrower, owner, money, note, datetime.today())
                 )
         self.conn.commit()
         cur.close()
@@ -115,24 +114,24 @@ class PostgreDB:
         Get `balance_number` from table `summary`.
         Calculate new `balance_number`, write back to table `summary`.
         """
-        # Step 0 - Sort names. [TODO]
+        # Step 0 - Sort names.
+        person1, person2 = tuple(sorted((borrower, owner)))
+        money_diff = (money) if person1 == borrower else (-money)
 
         # Step 1 - Insert if not exists. Then update new value.
         cur = self.conn.cursor()
         cur.execute(
-                # Fill in all the ____s. [TODO]
-                "INSERT INTO summary (____, ____, ____, ____) \
-                        VALUES (____, ____, ____, ____) \
-                        ON CONFLICT (____, ____, ____) DO NOTHING",
-                (____, ____, ____, ____)
+                "INSERT INTO summary (balance_number, unique_id, person1, person2) \
+                        VALUES (%s, %s, %s, %s) \
+                        ON CONFLICT (unique_id, person1, person2) DO NOTHING",
+                (0, unique_id, person1, person2)
                 )
         cur.execute(
-                # Fill in all the ____s. [TODO]
                 "UPDATE summary \
-                        SET ____ = ____ \
-                        WHERE ____ = %s and ____ = %s and ____ = %s \
+                        SET balance_number = (balance_number + %s) \
+                        WHERE unique_id = %s and person1 = %s and person2 = %s \
                         RETURNING balance_number",
-                (____, ____, ____, ____)
+                (money_diff, unique_id, person1, person2)
                 )
         self.conn.commit()
 
