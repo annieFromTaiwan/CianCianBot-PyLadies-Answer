@@ -8,11 +8,6 @@ import os
 ##########################################
 
 
-# TODO: Database
-
-conn = None
-
-"""
 import psycopg2
 import urllib.parse as urlparse
 
@@ -26,7 +21,6 @@ conn = psycopg2.connect(
     host=url.hostname,
     port=url.port
 )
-"""
 
 
 ##########################################
