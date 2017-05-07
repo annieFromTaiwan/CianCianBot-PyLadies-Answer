@@ -144,18 +144,18 @@ class PostgreDB:
     def get_all_summary(self, unique_id):
         cur = self.conn.cursor()
         cur.execute(
-                "SELECT ____, ____, ____ FROM ____ WHERE ____ = ____",
-                (____, )
+                "SELECT person1, person2, balance_number FROM summary WHERE unique_id = %s",
+                (unique_id,)
                 )
-        for ____, ____, ____ in cur.fetchall():
-            yield (____, ____, ____)
+        for person1, person2, balance_number in cur.fetchall():
+            yield (person1, person2, int(balance_number))
         cur.close()
 
     def get_recent_records(self, unique_id):
         cur = self.conn.cursor()
         cur.execute(
-                "SELECT ____, ____, ____, ____, ____ FROM ____ WHERE ____ ORDER BY ____ DESC LIMIT ____",
-                (____, )
+                "SELECT borrower, owner, money, note, timestamp FROM records WHERE unique_id = %s ORDER BY timestamp DESC LIMIT 5",
+                (unique_id,)
                 )
         records = cur.fetchall()
         cur.close()
